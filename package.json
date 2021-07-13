@@ -1,0 +1,25 @@
+{
+  "name": "natours-adventure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utsukushiihime/natours-adventure.git"
+  },
+  "keywords": [],
+  "author": "Crystal McNeil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/utsukushiihime/natours-adventure/issues"
+  },
+  "homepage": "https://github.com/utsukushiihime/natours-adventure#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12"
+  }
+}
