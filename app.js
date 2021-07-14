@@ -1,11 +1,13 @@
 const fs = require('fs');
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 // Set port
 const port = process.env.PORT || 3000;
 
 // Middleware
+app.use(morgan('dev'));
 app.use(express.json());
 app.use((req, res, next) => {
   console.log('Hello from middleware! 👋');
