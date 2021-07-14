@@ -100,6 +100,46 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getAllUsers = (req, res) => {
+  console.log('Route not yet implemented');
+  res.status(500).json({
+    status: 'error',
+    message: '500 - Internal Server Error',
+  });
+};
+
+const getUser = (req, res) => {
+  console.log('Route not yet implemented');
+  res.status(500).json({
+    status: 'error',
+    message: '500 - Internal Server Error',
+  });
+};
+
+const createUser = (req, res) => {
+  console.log('Route not yet implemented');
+  res.status(500).json({
+    status: 'error',
+    message: '500 - Internal Server Error',
+  });
+};
+
+const updateUser = (req, res) => {
+  console.log('Route not yet implemented');
+  res.status(500).json({
+    status: 'error',
+    message: '500 - Internal Server Error',
+  });
+};
+
+const deleteUser = (req, res) => {
+  console.log('Route not yet implemented');
+  res.status(500).json({
+    status: 'error',
+    message: '500 - Internal Server Error',
+  });
+};
+
 // Routes
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 
@@ -108,6 +148,14 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 // Start server
 app.listen(port, () => {
