@@ -2,11 +2,11 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 
-// Middleware
-app.use(express.json());
-
 // Set port
 const port = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
 
 // Get data
 const tours = JSON.parse(
@@ -88,13 +88,12 @@ const deleteTour = (req, res) => {
 };
 
 // Routes
-// app.get('/api/v1/tours', getAllTours);
-// app.post('/api/v1/tours', createTour);\
-// app.get('/api/v1/tours/:id', getTour);
-// app.patch('/api/v1/tours/:id', updateTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
 
-app.route('api/v1/tours').get(getAllTours).post(createTour);
+app.use((req, res, next) => {
+  console.log('Hello from middleware! 👋');
+  next();
+});
 
 app
   .route('/api/v1/tours/:id')
