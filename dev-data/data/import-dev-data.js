@@ -32,10 +32,10 @@ const importData = async () => {
   try {
     await Tour.create(tours);
     console.log('Data imported!');
-    process.exit();
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
 
 // delete data from mongo
@@ -43,11 +43,14 @@ const deleteData = async () => {
   try {
     await Tour.deleteMany();
     console.log('Data deleted!');
-    process.exit();
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
+
+// node dev-data/data/import-dev-data.js --import
+// node dev-data/data/import-dev-data.js --delete
 
 if (process.argv[2] === '--import') {
   importData();
