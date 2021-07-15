@@ -23,19 +23,6 @@ mongoose
     console.log(`Mongoose connected database`);
   });
 
-// create mongoose schema
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Tour name is required'],
-    unique: true,
-  },
-  rating: { type: Number, default: 4.5 },
-  price: { type: Number, required: [true, 'Price is required'] },
-});
-
-const Tour = mongoose.model('Tour', tourSchema);
-
 const app = require('./app');
 
 // Set port
