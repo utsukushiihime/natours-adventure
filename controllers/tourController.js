@@ -115,7 +115,7 @@ exports.getTourStats = async (req, res) => {
       },
       {
         $group: {
-          _id: '$difficulty',
+          _id: { $toUpper: '$difficulty' },
           num: { $sum: 1 },
           numRatings: { $sum: '$ratingsQuantity' },
           avgRating: { $avg: '$ratingsAverage' },
@@ -124,6 +124,16 @@ exports.getTourStats = async (req, res) => {
           maxPrice: { $max: '$price' },
         },
       },
+      {
+        $sort: {
+          avgPrice: 1,
+        },
+      },
+      // {
+      //   $match: {
+      //     _id: { $ne: 'EASY' },
+      //   },
+      // },
     ]);
     res.status(200).json({
       status: 'success',
@@ -138,6 +148,63 @@ exports.getTourStats = async (req, res) => {
     res.status(404).json({
       status: 'fail',
       message: 'Error getting tour stats',
+    });
+  }
+};
+
+// calculate the busiest month for the year
+exports.getMonthlyPlan = async (req, res) => {
+  try {
+    const year = req.params.year * 1;
+    const plan = await Tour.aggregate([
+      {
+        $unwind: '$startDates',
+      },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: '$startDates' },
+          numTourStarts: { $sum: 1 },
+          tours: { $push: '$name' },
+        },
+      },
+      {
+        $addFields: {
+          month: '$_id',
+        },
+      },
+      {
+        $project: {
+          _id: 0, // remove _id
+        },
+      },
+      {
+        $sort: {
+          numTourStarts: -1, // sort by most starts
+        },
+      },
+      { $limit: 12 }, // limit to 12 months
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        plan,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(404).json({
+      status: 'fail',
+      message: 'Error getting monthly plan',
     });
   }
 };
