@@ -24,11 +24,23 @@ exports.getAllTours = async (req, res) => {
     }
 
     // Field Limiting
-    if (req.query.limit) {
+    if (req.query.fields) {
       const fields = req.query.fields.split(',').join(' ');
       query = query.select(fields);
     } else {
       query = query.select('-__v');
+    }
+
+    // Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error('Page not found');
     }
 
     // Execute query with advanced filtering
@@ -48,7 +60,7 @@ exports.getAllTours = async (req, res) => {
 
     res.status(404).json({
       status: 'fail',
-      message: 'Error getting tours',
+      message: `An error occurred: ${err.message}`,
     });
   }
 };
@@ -78,7 +90,7 @@ exports.createTour = async (req, res) => {
     res.status(201).json({ status: 'success', data: { tour: newTour } });
   } catch (err) {
     res.status(400).json({ status: 'fail', data: err });
-    console.log(`There was an error: \n${err.message}`);
+    console.log(`There was an error: ${err.message}`);
   }
 };
 
