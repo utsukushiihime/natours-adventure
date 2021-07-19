@@ -30,6 +30,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
+  // Tour.findOne({ _id: req.params.id })
 
   if (!tour) {
     return next(new AppError('No tour found with that ID', 404));
@@ -104,6 +105,9 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     {
       $sort: { avgPrice: 1 },
     },
+    // {
+    //   $match: { _id: { $ne: 'EASY' } }
+    // }
   ]);
 
   res.status(200).json({
@@ -115,7 +119,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-  const year = req.params.year * 1;
+  const year = req.params.year * 1; // 2021
 
   const plan = await Tour.aggregate([
     {
