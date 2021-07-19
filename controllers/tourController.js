@@ -10,7 +10,7 @@ exports.aliasTopTours = async (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    // Execute query with advanced filtering
+    // Execute query
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .sort()
@@ -47,11 +47,9 @@ exports.getTour = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
-
     res.status(404).json({
       status: 'fail',
-      message: 'Error getting tour',
+      message: err,
     });
   }
 };
@@ -61,8 +59,7 @@ exports.createTour = async (req, res) => {
     const newTour = await Tour.create(req.body);
     res.status(201).json({ status: 'success', data: { tour: newTour } });
   } catch (err) {
-    res.status(400).json({ status: 'fail', data: err });
-    console.log(`There was an error: ${err.message}`);
+    res.status(400).json({ status: 'fail', message: err });
   }
 };
 
@@ -83,7 +80,8 @@ exports.updateTour = async (req, res) => {
 
     res.status(404).json({
       status: 'fail',
-      message: `Error updating tour: ${err}`,
+      message: 'error updating tour',
+      err,
     });
   }
 };
