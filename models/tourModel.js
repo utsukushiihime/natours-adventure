@@ -32,6 +32,7 @@ const tourSchema = new mongoose.Schema(
     images: [String],
     createdAt: { type: Date, default: Date.now(), select: false },
     startDates: [Date],
+    secretTour: { type: Boolean, default: false },
     slug: String,
   },
   {
@@ -45,10 +46,17 @@ tourSchema.virtual('durationWeeks').get(function () {
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
+// will not work when updating
 tourSchema.pre('save', function (next) {
   if (this.isNew) {
     this.slug = slugify(this.name, { lower: true });
   }
+  next();
+});
+
+// QUERY MIDDLEWARE: runs before .find()
+tourSchema.pre('find', function (next) {
+  this.find({ secretTour: { $ne: true } });
   next();
 });
 
