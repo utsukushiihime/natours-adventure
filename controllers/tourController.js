@@ -83,7 +83,7 @@ exports.updateTour = async (req, res) => {
 
     res.status(404).json({
       status: 'fail',
-      message: 'Error updating tour',
+      message: `Error updating tour: ${err}`,
     });
   }
 };
