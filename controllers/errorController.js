@@ -38,7 +38,6 @@ const sendErrorProd = (err, res) => {
 
     // Programming or other unknown error: don't leak error details
   } else {
-    // 1) Log error
     console.error('ERROR 💥', err);
 
     // 2) Send generic message
@@ -60,10 +59,9 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
 
-    if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === 'ValidationError')
-      error = handleValidationErrorDB(error);
+    if (err.name === 'CastError') error = handleCastErrorDB(err);
+    if (err.code === 11000) error = handleDuplicateFieldsDB(err);
+    if (err.name === 'ValidationError') error = handleValidationErrorDB(err);
 
     sendErrorProd(error, res);
   }
